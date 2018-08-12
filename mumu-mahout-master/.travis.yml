@@ -1,0 +1,22 @@
+language: java
+
+os: linux
+
+env:
+  global:
+    - HADOOP_ADDRESS=hdfs://localhost:9000
+
+sudo: required
+
+jdk:
+  - oraclejdk8
+
+before_install:
+    - wget https://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/stable/hadoop-2.9.1.tar.gz
+    - sudo tar -xzvf hadoop-2.9.1.tar.gz
+    - sudo sh hadoop-2.9.1/sbin/start-dfs.sh
+
+script: mvn clean install cobertura:cobertura
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
